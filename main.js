@@ -2,29 +2,27 @@ import './style.css'
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { GrannyKnot } from 'three/examples/jsm/curves/CurveExtras'
-var campos, tube
+var campos, tube, maxDocLocation
 
 // Set scene and camera
 const scene = new THREE.Scene();
 const assetPath = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/2666677/";
 
+// Space background
 const envMap = new THREE.CubeTextureLoader()
   .setPath(`${assetPath}skybox1_`)
   .load(['px.jpg', 'nx.jpg', 'py.jpg', 'ny.jpg', 'pz.jpg', 'nz.jpg']);
  scene.background = envMap;
 
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-campos = 0;
+const camera = new THREE.PerspectiveCamera(75, (window.innerWidth / window.innerHeight), 0.1, 1000);
+maxDocLocation = -5553;
+campos = document.body.getBoundingClientRect().top / maxDocLocation;
 
-const renderer = new THREE.WebGL1Renderer({
-  canvas: document.querySelector('#bg'),
-  antialias: true,
-});
-
-  
+const renderer = new THREE.WebGL1Renderer({antialias: true});
 
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild( renderer.domElement );
 
 // TODO: Fix initial camera position and rotation
 camera.position.set(-17.8, 7.05, 12.14);
@@ -47,22 +45,21 @@ const tubeMaterial = new THREE.MeshBasicMaterial({
 tube = new THREE.Mesh(tubeGeometry, tubeMaterial);
 
 scene.add(tube);
-console.log(tube.geometry.parameters.path.getPointAt(0.0));
 
 // Set lighting
 const pointLight = new THREE.PointLight(0xffffff);
 pointLight.position.set(-17.8, 7.05, 12.14);
 
-const ambientLight = new THREE.AmbientLight(0xffffff);
-scene.add(pointLight, ambientLight);
+// const ambient = new THREE.HemisphereLight(0xffffbb, 0x080820);
+scene.add(pointLight);
 
 // Helpers
-// const lightHelper = new THREE.PointLightHelper(pointLight);
-// const gridHelper = new THREE.GridHelper(200, 50);
+const lightHelper = new THREE.PointLightHelper(pointLight);
+const gridHelper = new THREE.GridHelper(200, 50);
 
-// scene.add(lightHelper, gridHelper);
+scene.add(lightHelper, gridHelper);
 
-// const controls = new OrbitControls(camera, renderer.domElement);
+const controls = new OrbitControls(camera, renderer.domElement);
 
 // Add stars
 function addStar() {
@@ -78,12 +75,8 @@ function addStar() {
 
 Array(200).fill().forEach(addStar);
 
-// Add background texture
-// const spaceTexture = new THREE.TextureLoader().load('space.jpg');
-// scene.background = spaceTexture;
-
 // Avatar
-const kimTexture = new THREE.TextureLoader().load('travel.png');
+const kimTexture = new THREE.TextureLoader().load('./imgs/travel.png');
 
 const kim = new THREE.Mesh(
   new THREE.BoxGeometry(3,3,3),
@@ -97,7 +90,8 @@ function moveCameraForward() {
   if (campos > 1) {
     campos = 0;
   }
-  campos += 0.001;
+  // campos += 0.001;
+  campos = document.body.getBoundingClientRect().top / maxDocLocation;
   const t = campos; 
 
   const pos = tube.geometry.parameters.path.getPointAt(t);
@@ -112,7 +106,7 @@ function moveCameraBackward() {
   if (campos < 0) {
     campos = 1;
   }
-  campos -= 0.001;
+  campos = document.body.getBoundingClientRect().top / maxDocLocation;
   const t = campos; 
 
   const pos = tube.geometry.parameters.path.getPointAt(t);
@@ -120,7 +114,7 @@ function moveCameraBackward() {
 
   camera.position.copy(pos);
   camera.lookAt(pos2);
-  console.log(pos2);
+  // console.log(pos2);
 }
 
 // Move camera when scrolling
@@ -137,7 +131,7 @@ function moveCamera() {
 
   // Update the previous scroll position
   previousScrollPosition = currentScrollPosition;
-
+  console.log(document.body.getBoundingClientRect().top);
   // kim.rotation.y += 0.01;
   // kim.rotation.z += 0.01;
 
@@ -150,8 +144,6 @@ function moveCamera() {
 
 let previousScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
 document.body.onscroll = moveCamera;
-
-
 
 
 // Animation function
