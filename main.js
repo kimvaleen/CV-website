@@ -2,7 +2,7 @@ import './style.css'
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { GrannyKnot } from 'three/examples/jsm/curves/CurveExtras'
-var campos, tube, maxDocLocation
+var campos, tube, height
 
 // Set scene and camera
 const scene = new THREE.Scene();
@@ -15,8 +15,8 @@ const envMap = new THREE.CubeTextureLoader()
  scene.background = envMap;
 
 const camera = new THREE.PerspectiveCamera(75, (window.innerWidth / window.innerHeight), 0.1, 1000);
-maxDocLocation = -5553;
-campos = document.body.getBoundingClientRect().top / maxDocLocation;
+height = -5553;
+campos = document.body.getBoundingClientRect().top / height;
 
 const renderer = new THREE.WebGL1Renderer({antialias: true});
 
@@ -85,65 +85,32 @@ const kim = new THREE.Mesh(
 
 scene.add(kim);
 
-// Automatic cameraUpdate
-function moveCameraForward() {
-  if (campos > 1) {
-    campos = 0;
-  }
-  // campos += 0.001;
-  campos = document.body.getBoundingClientRect().top / maxDocLocation;
-  const t = campos; 
-
-  const pos = tube.geometry.parameters.path.getPointAt(t);
-  const pos2 = tube.geometry.parameters.path.getPointAt(t + 0.01);
-
-  camera.position.copy(pos);
-  camera.lookAt(pos2);
-}
-
-function moveCameraBackward() {
-
-  if (campos < 0) {
-    campos = 1;
-  }
-  campos = document.body.getBoundingClientRect().top / maxDocLocation;
-  const t = campos; 
-
-  const pos = tube.geometry.parameters.path.getPointAt(t);
-  const pos2 = tube.geometry.parameters.path.getPointAt(t + 0.01);
-
-  camera.position.copy(pos);
-  camera.lookAt(pos2);
-  // console.log(pos2);
-}
-
 // Move camera when scrolling
-function moveCamera() {
-
+function updateCamera() {
   const currentScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
-
   if (currentScrollPosition > previousScrollPosition) {
-    moveCameraForward();
+    if (campos > 1) campos=0;
 
   } else if (currentScrollPosition < previousScrollPosition) {
-    moveCameraBackward();
+    if (campos < 0) campos=1;
   }
 
-  // Update the previous scroll position
   previousScrollPosition = currentScrollPosition;
+
+  campos = document.body.getBoundingClientRect().top / height;
+  const t = campos; 
+
+  const pos = tube.geometry.parameters.path.getPointAt(t);
+  const pos2 = tube.geometry.parameters.path.getPointAt(t + 0.01);
+
+  camera.position.copy(pos);
+  camera.lookAt(pos2);
+
   console.log(document.body.getBoundingClientRect().top);
-  // kim.rotation.y += 0.01;
-  // kim.rotation.z += 0.01;
-
-  // camera.position.z = t * -0.015;
-  // camera.position.x = t * -0.002;
-  // camera.position.y = t * -0.002;
-  // console.log(`Camera Position: x = ${camera.position.x}, y = ${camera.position.y}, z = ${camera.position.z}`);
-
 }
 
 let previousScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
-document.body.onscroll = moveCamera;
+document.body.onscroll = updateCamera;
 
 
 // Animation function
