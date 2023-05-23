@@ -2,7 +2,7 @@ import './style.css'
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { GrannyKnot } from 'three/examples/jsm/curves/CurveExtras'
-var campos, tube, height
+var campos, tube, height, body, html
 
 // Set scene and camera
 const scene = new THREE.Scene();
@@ -15,7 +15,16 @@ const envMap = new THREE.CubeTextureLoader()
  scene.background = envMap;
 
 const camera = new THREE.PerspectiveCamera(75, (window.innerWidth / window.innerHeight), 0.1, 1000);
-height = -5553;
+body = document.body;
+html = document.documentElement;
+
+height = -html.scrollHeight; 
+console.log(height);
+
+
+// console.log(`scrollHeight: ${body.scrollHeight}, body.offsetHeight: ${body.offsetHeight}
+// clientHeight: ${html.clientHeight}, html.scrollHeight: ${html.scrollHeight}, html.offsetHeight: ${html.offsetHeight}`);
+
 campos = document.body.getBoundingClientRect().top / height;
 
 const renderer = new THREE.WebGL1Renderer({antialias: true});
@@ -132,4 +141,5 @@ function resize(){
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize( window.innerWidth, window.innerHeight );
+  height = -html.scrollHeight; 
 }
