@@ -1,40 +1,47 @@
 @import url("https://use.typekit.net/jmk3xov.css");
 
-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-}
+  canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
 
 
-:root {
-  --dark-bg: rgba(15, 15, 15, 0.95);
-  --spacing: 0px;
+  :root {
+    --dark-bg: rgba(15, 15, 15, 0.95);
+    --spacing: 0px;
 
-  font-family: brandon-grotesque, sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
+    font-family: brandon-grotesque, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
 
 
-main {
-  width: 100vw;
-  color: white;
-  z-index: 99;
-  position: absolute;
-  width: 100%;
-  margin: 0px auto;
-  padding: 120px 0px;
-  
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-}
+  main {
+    width: 100vw;
+    color: white;
+    z-index: 99;
+    position: absolute;
+    width: 100%;
+    margin: 0px auto;
+    padding: 120px 0px;
+    
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    min-width: 1400px;
+  }
 
-h1, h2, h3, blockquote {
-  font-family: system-ui;
-  font-weight: 700;
-  font-style: normal;
-}
+  h1, h2, h3 {
+    font-family: system-ui;
+    font-weight: 700;
+    font-style: normal;
+  }
+
+  p {
+    font-family: system-ui;
+    font-weight: 500;
+    font-style: normal;
+  }
 
 
   header {
@@ -54,7 +61,7 @@ h1, h2, h3, blockquote {
     margin-bottom: var(--spacing);
   }
 
-  blockquote {
+  /* blockquote {
     margin: 0;
     padding: 0;
     grid-column: 9 / span 12;
@@ -67,7 +74,7 @@ h1, h2, h3, blockquote {
     font-size: 4rem;
     display: inline;
     line-height: 1;
-  }
+  } */
 
   .left {
     grid-column: 6 / 12;
@@ -101,11 +108,20 @@ h1, h2, h3, blockquote {
   .layer5 {
     background-image: url('./imgs/layer5.svg');
   }
+
+  .layer6 {
+    background-image: url('./imgs/layer6.svg');
+  }
+
   .blue {
     background: #020113;
   }
 
-  .lightblue {
+  .red {
+    background: #FF5C39;
+  }
+
+  .light-blue-gradient {
     background-image:
     linear-gradient(
       #76C9FF,  
@@ -114,16 +130,7 @@ h1, h2, h3, blockquote {
     color: #020113;
   }
 
-  .orangegradient {
-    background-image: 
-      linear-gradient(
-        #FF5C39,
-        #FFE84D 
-      );
-    color: #020113;
-  }
-
-  .bluegradient {
+  .blue-gradient {
     background-image: 
       linear-gradient(
         180deg,
@@ -134,7 +141,16 @@ h1, h2, h3, blockquote {
       );
   }
 
-  .greengradient {
+  .orange-gradient {
+    background-image: 
+      linear-gradient(
+        #FF5C39,
+        #FFE84D 
+      );
+    color: #020113;
+  }
+
+  .green-gradient {
     background-image: 
       linear-gradient(
       #4FACF7,
@@ -143,10 +159,45 @@ h1, h2, h3, blockquote {
       color: #020113
   }
 
-  .greengradient2 {
+  .green-gradient2 {
     background-image: 
       linear-gradient(
       #A1E37C,
       #020113
       );
+  }
+
+  .violet-gradient {
+    background-image: 
+      linear-gradient(
+        #76C9FF,
+        #4FACF7,
+        #9167E5,
+        #A85ADA
+     );
+     color:#020113
+  }
+
+  .linkedin-icon {
+    width: 30px;
+    height: 30px;
+    position: relative;
+    top: 7px;
+    right: 5px;
+  }
+
+  .at-icon {
+    width: 30px;
+    height: 30px;
+    position: relative;
+    top: 7px;
+    right: 5px; 
+  }
+
+  .phone-icon {
+    width: 30px;
+    height: 30px;
+    position: relative;
+    top: 7px;
+    right: 5px;
   }
