@@ -1,7 +1,9 @@
 import './style.css'
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { GrannyKnot } from 'three/examples/jsm/curves/CurveExtras'
+import { GrannyKnot } from 'three/examples/jsm/curves/CurveExtras';
+import pose from './shape-positions.json' assert { type: 'json' };
+
 var campos, tube, height, body, html
 
 // Set scene and camera
@@ -39,19 +41,13 @@ camera.lookAt((-16.75, 6.76, 12.62));
 
 renderer.render(scene, camera);
 
-// Set geometries
-const geometry = new THREE.TorusGeometry(10, 3, 16,  100);
-const material = new THREE.MeshStandardMaterial( {color: 0xFF6347} );
-const torus = new THREE.Mesh(geometry, material);
-
-scene.add(torus);
-
 // Add curve
 const curve = new GrannyKnot();
 const tubeGeometry = new THREE.TubeGeometry(curve, 100, 2, 8, true);
 const tubeMaterial = new THREE.MeshBasicMaterial({
-  color: 0xffffff, wireframe: true, side: THREE.DoubleSide, transparent: true, opacity: 0});
+  color: 0xffffff, wireframe: true, side: THREE.DoubleSide, transparent: true, opacity: 1});
 tube = new THREE.Mesh(tubeGeometry, tubeMaterial);
+const path = tube.geometry.parameters.path;
 
 scene.add(tube);
 
@@ -85,14 +81,49 @@ function addStar() {
 Array(200).fill().forEach(addStar);
 
 // Avatar
-const kimTexture = new THREE.TextureLoader().load('./imgs/travel.png');
+const textureLoader = new THREE.TextureLoader();
+const kimTexture = textureLoader.load('./imgs/travel.png');
 
 const kim = new THREE.Mesh(
   new THREE.BoxGeometry(3,3,3),
   new THREE.MeshBasicMaterial( { map: kimTexture})
 );
 
+
+var vector = new THREE.Vector3();
+var vector2 = new THREE.Vector3();
+
+camera.getWorldDirection(vector);
+camera.getWorldPosition(vector2);
+console.log(vector);
+
+kim.position.set(pose.kimpose[0], pose.kimpose[1], pose.kimpose[2]);
+kim.rotation.set(-pose.kimpose[3], -pose.kimpose[4], -pose.kimpose[5]);
+
 scene.add(kim);
+
+// Create the ring geometry
+const ringGeometry = new THREE.RingGeometry(5, 8, 64);
+const ringTexture = textureLoader.load('./imgs/rings.png');
+const ringMaterial = new THREE.MeshBasicMaterial({
+  map: ringTexture,
+  side: THREE.DoubleSide,
+  transparent: true,
+  opacity: 0.8
+});
+
+const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+ring.position.set(pose.toruspose[0], pose.toruspose[1], pose.toruspose[2]);
+
+const saturnTexture = textureLoader.load('./imgs/saturn.png');
+const saturn = new THREE.Mesh(
+  new THREE.SphereGeometry(4, 32, 32),
+  new THREE.MeshBasicMaterial( { map: saturnTexture})
+);
+saturn.position.set(pose.toruspose[0], pose.toruspose[1], pose.toruspose[2])
+
+scene.add(ring, saturn);
+
 
 // Move camera when scrolling
 function updateCamera() {
@@ -115,7 +146,6 @@ function updateCamera() {
   camera.position.copy(pos);
   camera.lookAt(pos2);
 
-  console.log(document.body.getBoundingClientRect().top);
 }
 
 let previousScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
@@ -125,9 +155,14 @@ document.body.onscroll = updateCamera;
 // Animation function
 function animate() {
   requestAnimationFrame(animate);
-  torus.rotation.x += 0.01;
-  torus.rotation.y += 0.005;
-  torus.rotation.z += 0.005;
+  ring.rotation.x += 0.01;
+  ring.rotation.y += 0.005;
+  ring.rotation.z += 0.005;
+
+  // camera.getWorldDirection(vector);
+  // camera.getWorldPosition(vector2);
+  // // console.log(`Direction: ${vector.parameters}, position: ${vector2.x}`);
+  // console.log(vector2);
 
   renderer.render(scene, camera);
 }
