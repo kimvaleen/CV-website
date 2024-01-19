@@ -45,7 +45,7 @@ renderer.render(scene, camera);
 const curve = new GrannyKnot();
 const tubeGeometry = new THREE.TubeGeometry(curve, 100, 2, 8, true);
 const tubeMaterial = new THREE.MeshBasicMaterial({
-  color: 0xffffff, wireframe: true, side: THREE.DoubleSide, transparent: true, opacity: 1});
+  color: 0xffffff, wireframe: true, side: THREE.DoubleSide, transparent: true, opacity: 0});
 tube = new THREE.Mesh(tubeGeometry, tubeMaterial);
 const path = tube.geometry.parameters.path;
 
@@ -58,13 +58,11 @@ pointLight.position.set(-17.8, 7.05, 12.14);
 // const ambient = new THREE.HemisphereLight(0xffffbb, 0x080820);
 scene.add(pointLight);
 
-// Helpers
-const lightHelper = new THREE.PointLightHelper(pointLight);
-const gridHelper = new THREE.GridHelper(200, 50);
-
-scene.add(lightHelper, gridHelper);
-
-const controls = new OrbitControls(camera, renderer.domElement);
+// Helpers, COMMENT OUT WHEN NOT NEEDED
+// const lightHelper = new THREE.PointLightHelper(pointLight);
+// const gridHelper = new THREE.GridHelper(200, 50);
+// const controls = new OrbitControls(camera, renderer.domElement);
+// scene.add(lightHelper, gridHelper);
 
 // Add stars
 function addStar() {
@@ -86,9 +84,8 @@ const kimTexture = textureLoader.load('./imgs/travel.png');
 
 const kim = new THREE.Mesh(
   new THREE.BoxGeometry(3,3,3),
-  new THREE.MeshBasicMaterial( { map: kimTexture})
+  new THREE.MeshBasicMaterial( { map: kimTexture} )
 );
-
 
 var vector = new THREE.Vector3();
 var vector2 = new THREE.Vector3();
