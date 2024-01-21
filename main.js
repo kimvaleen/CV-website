@@ -4,6 +4,10 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { GrannyKnot } from 'three/examples/jsm/curves/CurveExtras';
 import pose from './shape-positions.json' assert { type: 'json' };
 
+import travelImage from './images/travel.png';
+import ringsImage from './images/rings.png';
+import saturnImage from './images/saturn.png';
+
 var campos, tube, height, body, html
 
 // Set scene and camera
@@ -53,7 +57,7 @@ scene.add(tube);
 
 // Set lighting
 const pointLight = new THREE.PointLight(0xffffff);
-pointLight.position.set(-17.8, 7.05, 12.14);
+pointLight.position.set(-17.8, 7.05, 12.14);  // -17.8, 7.05, 12.14
 
 // const ambient = new THREE.HemisphereLight(0xffffbb, 0x080820);
 scene.add(pointLight);
@@ -80,7 +84,7 @@ Array(200).fill().forEach(addStar);
 
 // Avatar
 const textureLoader = new THREE.TextureLoader();
-const kimTexture = textureLoader.load('./imgs/travel.png');
+const kimTexture = textureLoader.load(travelImage);
 
 const kim = new THREE.Mesh(
   new THREE.BoxGeometry(3,3,3),
@@ -101,7 +105,7 @@ scene.add(kim);
 
 // Create the ring geometry
 const ringGeometry = new THREE.RingGeometry(5, 8, 64);
-const ringTexture = textureLoader.load('./imgs/rings.png');
+const ringTexture = textureLoader.load(ringsImage);
 const ringMaterial = new THREE.MeshBasicMaterial({
   map: ringTexture,
   side: THREE.DoubleSide,
@@ -112,7 +116,7 @@ const ringMaterial = new THREE.MeshBasicMaterial({
 const ring = new THREE.Mesh(ringGeometry, ringMaterial);
 ring.position.set(pose.toruspose[0], pose.toruspose[1], pose.toruspose[2]);
 
-const saturnTexture = textureLoader.load('./imgs/saturn.png');
+const saturnTexture = textureLoader.load(saturnImage);
 const saturn = new THREE.Mesh(
   new THREE.SphereGeometry(4, 32, 32),
   new THREE.MeshBasicMaterial( { map: saturnTexture})
@@ -135,7 +139,7 @@ function updateCamera() {
   previousScrollPosition = currentScrollPosition;
 
   campos = document.body.getBoundingClientRect().top / height;
-  const t = campos; 
+  const t = campos;
 
   const pos = tube.geometry.parameters.path.getPointAt(t);
   const pos2 = tube.geometry.parameters.path.getPointAt(t + 0.01);
@@ -173,5 +177,5 @@ function resize(){
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize( window.innerWidth, window.innerHeight );
-  height = -html.scrollHeight; 
+  height = -html.scrollHeight;
 }

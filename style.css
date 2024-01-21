@@ -28,7 +28,7 @@
     
     display: grid;
     grid-template-columns: repeat(12, 1fr);
-    min-width: 1400px;
+    min-width: 400px;
   }
 
   h1, h2, h3 {
@@ -90,27 +90,27 @@
   }
 
   .layer1 {
-    background-image: url('./imgs/layer1.svg');
+    background-image: url('./images/layer1.svg');
   }
 
   .layer2 {
-    background-image: url('./imgs/layer2.svg');
+    background-image: url('./images/layer2.svg');
   }
 
   .layer3 {
-    background-image: url('./imgs/layer3.svg');
+    background-image: url('./images/layer3.svg');
   }
 
   .layer4 {
-    background-image: url('./imgs/layer4.svg');
+    background-image: url('./images/layer4.svg');
   }
 
   .layer5 {
-    background-image: url('./imgs/layer5.svg');
+    background-image: url('./images/layer5.svg');
   }
 
   .layer6 {
-    background-image: url('./imgs/layer6.svg');
+    background-image: url('./images/layer6.svg');
   }
 
   .blue {
